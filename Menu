@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Fichas Médicas - AGSCh</title>
+    <style>
+        :root {
+            --primary: #2c7fb8;
+            --primary-dark: #1d5f8a;
+            --secondary: #7fcdbb;
+            --light: #f0f9ff;
+            --dark: #333;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --border: #ddd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 0 0 10px 10px;
+            margin-bottom: 30px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .card-icon {
+            background-color: var(--light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(44, 127, 184, 0.2);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .checkbox-group, .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-item, .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox-item input, .radio-item input {
+            width: auto;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: #e9ecef;
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #dde1e6;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .alert-success {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--success);
+            color: #27ae60;
+        }
+        
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--danger);
+            color: #c0392b;
+        }
+        
+        .info-box {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .signature-area {
+            border: 1px dashed var(--border);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #777;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                text-align: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-stethoscope"></i>
+                    <h1>Sistema de Fichas Médicas - AGSCh</h1>
+                </div>
+                <div class="user-info">
+                    <span>Versión para PostgreSQL</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="info-box">
+            <p><strong>Instrucciones:</strong> Completa todos los campos de esta ficha. Si no sabes o no tienes la información, escribe "Sin información" o "S/I". Si la pregunta no aplica a la persona, escribe "No aplica" o "N/A".</p>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="personal">Datos Personales</div>
+            <div class="tab" data-tab="group">Datos de Grupo</div>
+            <div class="tab" data-tab="emergency">Contactos de Emergencia</div>
+            <div class="tab" data-tab="medical">Antecedentes Médicos</div>
+            <div class="tab" data-tab="mental">Salud Mental</div>
+            <div class="tab" data-tab="emotional">Regulación Emocional</div>
+        </div>
+        
+        <form id="medical-record-form">
+            <!-- Datos Personales -->
+            <div class="tab-content active" id="personal-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Datos Personales</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombreCompleto">Nombre Completo *</label>
+                            <input type="text" id="nombreCompleto" name="nombreCompleto" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombreSocial">Nombre Social</label>
+                            <input type="text" id="nombreSocial" name="nombreSocial">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fechaNacimiento">Fecha de Nacimiento *</label>
+                            <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edad">Edad (en años) *</label>
+                            <input type="number" id="edad" name="edad" min="0" max="120" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="genero">Género *</label>
+                            <select id="genero" name="genero" required>
+                                <option value="">Seleccione...</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="femenino">Femenino</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nacionalidad">Nacionalidad *</label>
+                            <input type="text" id="nacionalidad" name="nacionalidad" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="run">RUN *</label>
+                            <input type="text" id="run" name="run" placeholder="Ej: 12345678-9" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="estatura">Estatura (m) *</label>
+                            <input type="number" id="estatura" name="estatura" step="0.01" min="0.5" max="2.5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="peso">Peso (kg) *</label>
+                            <input type="number" id="peso" name="peso" min="0" max="300" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Datos de Grupo -->
+            <div class="tab-content" id="group-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Datos de Grupo</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombreGrupo">Nombre de Grupo *</label>
+                            <input type="text" id="nombreGrupo" name="nombreGrupo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rama">Rama *</label>
+                            <select id="rama" name="rama" required>
+                                <option value="">Seleccione...</option>
+                                <option value="manada">Manada</option>
+                                <option value="unidad">Unidad</option>
+                                <option value="caminantes">Caminantes</option>
+                                <option value="rovers">Rovers</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zona">Zona *</label>
+                            <input type="text" id="zona" name="zona" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="distrito">Distrito *</label>
+                            <input type="text" id="distrito" name="distrito" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contactos de Emergencia -->
+            <div class="tab-content" id="emergency-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Contactos de Emergencia</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contacto1Nombre">Nombre Contacto 1 *</label>
+                            <input type="text" id="contacto1Nombre" name="contacto1Nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contacto1Parentesco">Parentesco/Relación *</label>
+                            <input type="text" id="contacto1Parentesco" name="contacto1Parentesco" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contacto1Telefono">Teléfono *</label>
+                            <input type="tel" id="contacto1Telefono" name="contacto1Telefono" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contacto2Nombre">Nombre Contacto 2</label>
+                            <input type="text" id="contacto2Nombre" name="contacto2Nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="contacto2Parentesco">Parentesco/Relación</label>
+                            <input type="text" id="contacto2Parentesco" name="contacto2Parentesco">
+                        </div>
+                        <div class="form-group">
+                            <label for="contacto2Telefono">Teléfono</label>
+                            <input type="tel" id="contacto2Telefono" name="contacto2Telefono">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Datos Previsionales</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-file-medical"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Previsión (Marque la opción con una X)</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="prevision-fonasa" name="prevision" value="fonasa">
+                                <label for="prevision-fonasa">Fonasa</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="prevision-isapre" name="prevision" value="isapre">
+                                <label for="prevision-isapre">Isapre</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="prevision-otro" name="prevision" value="otro">
+                                <label for="prevision-otro">Otro</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="prevision-especifique-container" style="display: none;">
+                        <label for="previsionEspecifique">Especifique</label>
+                        <input type="text" id="previsionEspecifique" name="previsionEspecifique">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>¿Tiene algún seguro complementario de salud o escolar?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="seguro-si" name="seguroComplementario" value="si">
+                                <label for="seguro-si">Sí</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="seguro-no" name="seguroComplementario" value="no">
+                                <label for="seguro-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="institucionConvenio">Institución convenio</label>
+                        <input type="text" id="institucionConvenio" name="institucionConvenio">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Antecedentes Médicos -->
+            <div class="tab-content" id="medical-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Antecedentes Médicos</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="grupoSanguineo">Grupo sanguíneo y Factor Rh</label>
+                            <input type="text" id="grupoSanguineo" name="grupoSanguineo" placeholder="Ej: O+">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Alergias</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="alergias-si" name="alergias" value="si">
+                                <label for="alergias-si">Sí</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="alergias-no" name="alergias" value="no">
+                                <label for="alergias-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="alergias-especifique-container" style="display: none;">
+                        <label for="alergiasEspecifique">Especifique alergias (medicamentos, alimentos, picaduras, plantas, látex, yodo, anestésicos, etc.)</label>
+                        <textarea id="alergiasEspecifique" name="alergiasEspecifique"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Intolerancia alimentaria</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="intolerancia-si" name="intoleranciaAlimentaria" value="si">
+                                <label for="intolerancia-si">Sí</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="intolerancia-no" name="intoleranciaAlimentaria" value="no">
+                                <label for="intolerancia-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="intolerancia-especifique-container" style="display: none;">
+                        <label for="intoleranciaEspecifique">Especifique:</label>
+                        <textarea id="intoleranciaEspecifique" name="intoleranciaEspecifique"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Enfermedades Crónicas o Importantes (Marque con una X las opciones)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="enfermedad-diabetes" name="enfermedadesCronicas" value="diabetes">
+                                <label for="enfermedad-diabetes">Diabetes mellitus</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="enfermedad-hipertension" name="enfermedadesCronicas" value="hipertension">
+                                <label for="enfermedad-hipertension">Hipertensión arterial</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="enfermedad-cardíaca" name="enfermedadesCronicas" value="cardíaca">
+                                <label for="enfermedad-cardíaca">Patología cardíaca</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="enfermedad-dolor-cabeza" name="enfermedadesCronicas" value="dolor-cabeza">
+                                <label for="enfermedad-dolor-cabeza">Dolor de cabeza</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="enfermedad-asma" name="enfermedadesCronicas" value="asma">
+                                <label for="enfermedad-asma">Asma</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="enfermedad-tuberculosis" name="enfermedadesCronicas" value="tuberculosis">
+                                <label for="enfermedad-tuberculosis">Tuberculosis</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="enfermedad-epilepsia" name="enfermedadesCronicas" value="epilepsia">
+                                <label for="enfermedad-epilepsia">Epilepsia</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="enfermedad-renal" name="enfermedadesCronicas" value="renal">
+                                <label for="enfermedad-renal">Enfermedad renal</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="enfermedad-alteraciones-sanguineas" name="enfermedadesCronicas" value="alteraciones-sanguineas">
+                                <label for="enfermedad-alteraciones-sanguineas">Alteraciones sanguíneas</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="enfermedad-autoinmune" name="enfermedadesCronicas" value="autoinmune">
+                                <label for="enfermedad-autoinmune">Enfermedad autoinmune</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="enfermedad-tiroides" name="enfermedadesCronicas" value="tiroides">
+                                <label for="enfermedad-tiroides">Hipo/Hipertiroidismo</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="enfermedad-otra" name="enfermedadesCronicas" value="otra">
+                                <label for="enfermedad-otra">Otra</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="enfermedad-especifique-container" style="display: none;">
+                        <label for="enfermedadEspecifique">Especifique:</label>
+                        <textarea id="enfermedadEspecifique" name="enfermedadEspecifique"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="medicamentosCronicos">Medicamentos, dosis y horarios</label>
+                        <textarea id="medicamentosCronicos" name="medicamentosCronicos"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Salud Mental -->
+            <div class="tab-content" id="mental-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Antecedentes de Salud Mental</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>¿Diagnóstico de salud mental?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="diagnostico-mental-si" name="diagnosticoSaludMental" value="si">
+                                <label for="diagnostico-mental-si">Sí</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="diagnostico-mental-no" name="diagnosticoSaludMental" value="no">
+                                <label for="diagnostico-mental-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="diagnostico-especifique-container" style="display: none;">
+                        <label for="diagnosticoEspecifique">Especifique</label>
+                        <textarea id="diagnosticoEspecifique" name="diagnosticoEspecifique"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>¿Está en tratamiento actualmente?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="tratamiento-mental-si" name="tratamientoSaludMental" value="si">
+                                <label for="tratamiento-mental-si">Sí</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="tratamiento-mental-no" name="tratamientoSaludMental" value="no">
+                                <label for="tratamiento-mental-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="medicamentosSaludMental">Medicamentos, dosis y horarios</label>
+                        <textarea id="medicamentosSaludMental" name="medicamentosSaludMental"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profesionalTratante">Profesional tratante y contacto</label>
+                        <textarea id="profesionalTratante" name="profesionalTratante"></textarea>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Historial Clínico</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Hospitalizaciones previas</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="hospitalizaciones-si" name="hospitalizacionesPrevias" value="si">
+                                <label for="hospitalizaciones-si">Sí</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="hospitalizaciones-no" name="hospitalizacionesPrevias" value="no">
+                                <label for="hospitalizaciones-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="hospitalizaciones-especifique-container" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hospitalizacionesMotivo">Motivo</label>
+                                <input type="text" id="hospitalizacionesMotivo" name="hospitalizacionesMotivo">
+                            </div>
+                            <div class="form-group">
+                                <label for="hospitalizacionesFecha">Fecha</label>
+                                <input type="date" id="hospitalizacionesFecha" name="hospitalizacionesFecha">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Cirugías previas</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="cirugias-si" name="cirugiasPrevias" value="si">
+                                <label for="cirugias-si">Sí</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="cirugias-no" name="cirugiasPrevias" value="no">
+                                <label for="cirugias-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="cirugias-especifique-container" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cirugiasCual">Cuál</label>
+                                <input type="text" id="cirugiasCual" name="cirugiasCual">
+                            </div>
+                            <div class="form-group">
+                                <label for="cirugiasFecha">Fecha</label>
+                                <input type="date" id="cirugiasFecha" name="cirugiasFecha">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Regulación Emocional -->
+            <div class="tab-content" id="emotional-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Registro de Necesidades de Regulación Emocional</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>¿Presenta un diagnóstico o características relevantes?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="diagnostico-emocional-si" name="diagnosticoEmocional" value="si">
+                                <label for="diagnostico-emocional-si">Sí</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="diagnostico-emocional-no" name="diagnosticoEmocional" value="no">
+                                <label for="diagnostico-emocional-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="diagnostico-emocional-especifique-container" style="display: none;">
+                        <label for="diagnosticoEmocionalEspecifique">¿Cuáles?</label>
+                        <textarea id="diagnosticoEmocionalEspecifique" name="diagnosticoEmocionalEspecifique"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="interesesDisfrute">¿Qué intereses y/o experiencias generan disfrute en el niño/a, adolescente o joven?</label>
+                        <textarea id="interesesDisfrute" name="interesesDisfrute"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="situacionesEstres">Identifique y mencione cuáles son las situaciones que generan estrés, lo que usted observa que gatille las desregulaciones dentro y fuera del hogar. ¿Qué conductas y/o acciones se observan cuando está ansioso/a o nervioso/a? Aquellas que son previas a una desregulación.</label>
+                        <textarea id="situacionesEstres" name="situacionesEstres"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Necesidades Específicas (Marque o describa)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="necesidad-comunicacion" name="necesidadesEspecificas" value="comunicacion">
+                                <label for="necesidad-comunicacion">Apoyo en comunicación (ej.: lenguaje no verbal, pictogramas)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="necesidad-sensorial" name="necesidadesEspecificas" value="sensorial">
+                                <label for="necesidad-sensorial">Dificultades sensoriales (ej.: luces, ruidos, texturas)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="necesidad-organizacion" name="necesidadesEspecificas" value="organizacion">
+                                <label for="necesidad-organizacion">Ayuda en organización/planificación (ej.: rutinas visuales, recordatorios)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="necesidad-otras" name="necesidadesEspecificas" value="otras">
+                                <label for="necesidad-otras">Otras</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="estrategiasCalma">Estrategias que funcionan en casa o colegio, ¿Qué acciones y/o apoyos otorgan para que el niño/a, adolescente o joven para que vuelva a la calma?, ¿Con cuál logra calmarlo?, ¿Qué herramientas usa para calmarse?</label>
+                        <textarea id="estrategiasCalma" name="estrategiasCalma"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="observacionesAdicionales">Observaciones adicionales</label>
+                        <textarea id="observacionesAdicionales" name="observacionesAdicionales"></textarea>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Documentación y Firmas</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fechaLlenado">Fecha de Llenado *</label>
+                        <input type="date" id="fechaLlenado" name="fechaLlenado" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="confirmacionVeracidad" name="confirmacionVeracidad" required>
+                            <label for="confirmacionVeracidad">Doy fe que la información contenida corresponde a la realidad de la persona que se individualiza. *</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombreApoderado">Nombre y Firma Apoderado *</label>
+                            <input type="text" id="nombreApoderado" name="nombreApoderado" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefonoApoderado">Teléfono de contacto *</label>
+                            <input type="tel" id="telefonoApoderado" name="telefonoApoderado" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nombreDirigente">Nombre y Firma Dirigente/Guía Responsable</label>
+                        <input type="text" id="nombreDirigente" name="nombreDirigente">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <button type="button" class="btn btn-secondary" id="btn-prev">
+                    <i class="fas fa-arrow-left"></i> Anterior
+                </button>
+                <button type="button" class="btn btn-primary" id="btn-next">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i> Guardar en Base de Datos
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Sistema de Fichas Médicas - AGSCh &copy; 2023 - Diseñado para integración con PostgreSQL</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navegación por pestañas
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        
+        let currentTab = 0;
+        
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => {
+                showTab(index);
+            });
+        });
+        
+        btnPrev.addEventListener('click', () => {
+            if (currentTab > 0) {
+                showTab(currentTab - 1);
+            }
+        });
+        
+        btnNext.addEventListener('click', () => {
+            if (currentTab < tabs.length - 1) {
+                showTab(currentTab + 1);
+            }
+        });
+        
+        function showTab(index) {
+            // Ocultar todas las pestañas y contenidos
+            tabs.forEach(tab => tab.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Mostrar la pestaña seleccionada
+            tabs[index].classList.add('active');
+            tabContents[index].classList.add('active');
+            
+            currentTab = index;
+            
+            // Actualizar botones de navegación
+            btnPrev.style.display = currentTab === 0 ? 'none' : 'inline-flex';
+            btnNext.style.display = currentTab === tabs.length - 1 ? 'none' : 'inline-flex';
+        }
+        
+        // Mostrar la primera pestaña al cargar
+        showTab(0);
+        
+        // Mostrar/ocultar campos condicionales
+        document.querySelectorAll('input[type="radio"][name="prevision"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const especifiqueContainer = document.getElementById('prevision-especifique-container');
+                especifiqueContainer.style.display = this.value === 'otro' ? 'block' : 'none';
+            });
+        });
+        
+        document.querySelectorAll('input[type="radio"][name="alergias"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const especifiqueContainer = document.getElementById('alergias-especifique-container');
+                especifiqueContainer.style.display = this.value === 'si' ? 'block' : 'none';
+            });
+        });
+        
+        document.querySelectorAll('input[type="radio"][name="intoleranciaAlimentaria"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const especifiqueContainer = document.getElementById('intolerancia-especifique-container');
+                especifiqueContainer.style.display = this.value === 'si' ? 'block' : 'none';
+            });
+        });
+        
+        document.querySelectorAll('input[type="radio"][name="diagnosticoSaludMental"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const especifiqueContainer = document.getElementById('diagnostico-especifique-container');
+                especifiqueContainer.style.display = this.value === 'si' ? 'block' : 'none';
+            });
+        });
+        
+        document.querySelectorAll('input[type="radio"][name="hospitalizacionesPrevias"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const especifiqueContainer = document.getElementById('hospitalizaciones-especifique-container');
+                especifiqueContainer.style.display = this.value === 'si' ? 'block' : 'none';
+            });
+        });
+        
+        document.querySelectorAll('input[type="radio"][name="cirugiasPrevias"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const especifiqueContainer = document.getElementById('cirugias-especifique-container');
+                especifiqueContainer.style.display = this.value === 'si' ? 'block' : 'none';
+            });
+        });
+        
+        document.querySelectorAll('input[type="radio"][name="diagnosticoEmocional"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const especifiqueContainer = document.getElementById('diagnostico-emocional-especifique-container');
+                especifiqueContainer.style.display = this.value === 'si' ? 'block' : 'none';
+            });
+        });
+        
+        document.getElementById('enfermedad-otra').addEventListener('change', function() {
+            const especifiqueContainer = document.getElementById('enfermedad-especifique-container');
+            especifiqueContainer.style.display = this.checked ? 'block' : 'none';
+        });
+        
+        // Manejo del formulario
+        document.getElementById('medical-record-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validación básica
+            if (!validateForm()) {
+                alert('Por favor, complete todos los campos obligatorios antes de enviar el formulario.');
+                return;
+            }
+            
+            // Aquí iría la lógica para enviar los datos a PostgreSQL
+            // Por ahora, solo mostramos un mensaje de éxito
+            alert('Formulario enviado correctamente. Los datos han sido guardados en la base de datos.');
+            
+            // En una implementación real, aquí enviaríamos los datos al servidor
+            // utilizando fetch o XMLHttpRequest para insertarlos en PostgreSQL
+        });
+        
+        function validateForm() {
+            const requiredFields = document.querySelectorAll('[required]');
+            let valid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    valid = false;
+                    field.style.borderColor = 'var(--danger)';
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+            
+            return valid;
+        }
+        
+        // Calcular automáticamente la edad cuando se ingresa la fecha de nacimiento
+        document.getElementById('fechaNacimiento').addEventListener('change', function() {
+            const birthDate = new Date(this.value);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            document.getElementById('edad').value = age;
+        });
+    </script>
+</body>
+</html>
